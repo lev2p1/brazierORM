@@ -3,10 +3,10 @@
 
 #include "brazierORM.h"
 
-using namespace std;
+using namespace brazier;
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+	Logger::log("Hello brazier", "INFO");
 	return 0;
 }

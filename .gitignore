@@ -1,2 +1,7 @@
 /.vs
 /out
+/vcpkg_installed
+/build
+
+.env
+config.json
