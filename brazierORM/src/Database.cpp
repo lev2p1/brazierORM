@@ -22,6 +22,15 @@
 
 using namespace brazier;
 
+Database::Database(std::string db_host, std::string db_port, std::string db_user, std::string db_password, std::string db_name) {
+    std::string connection_string = "host=" + db_host + " user=" + db_user + " password=" + db_password + " dbname=" + db_name + " client_encoding=UTF8";
+    conn_ = PQconnectdb(connection_string.c_str());
+    Logger::log("Successfully connected to database " + db_name, "SUCCESS");
+    if (PQstatus(conn_) != CONNECTION_OK) {
+        throw std::runtime_error("Connection failed: " + std::string(PQerrorMessage(conn_)));
+    }
+}
+
 Database::~Database() {
     if (conn_) {
         PQfinish(conn_);

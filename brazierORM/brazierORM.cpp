@@ -7,6 +7,13 @@ using namespace brazier;
 
 int main()
 {
-	Logger::log("Hello brazier", "INFO");
+	setlocale(LC_ALL, "Russian");
+	try {
+		Database db("localhost", "5432", "test", "test", "test");
+	}
+	catch (const std::exception& e) {
+		Logger::log(std::string("Exception: ") + e.what(), "ERROR");
+	}
+
 	return 0;
 }

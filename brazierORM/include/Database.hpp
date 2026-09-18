@@ -34,6 +34,7 @@ namespace brazier {
 
     class Database {
     public:
+        Database(std::string db_host, std::string db_port, std::string db_user, std::string db_password, std::string db_name);
         ~Database();
         void execute(const std::string& sql);
         void transaction(const std::string name);
