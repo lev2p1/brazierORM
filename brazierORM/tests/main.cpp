@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2026 Kirill Sergeev, Nikolay Sugonyako, Andrey Agarkov, Gleb Safyannikov
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -18,8 +18,10 @@
  * along with brazier; if not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "main.h"
 
-#include <iostream>
+int main() {
+	int result = RUN_ALL_TESTS();
 
-// TODO: установите здесь ссылки на дополнительные заголовки, требующиеся для программы.
+	return result;
+}

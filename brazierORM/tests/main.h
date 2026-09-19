@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2026 Kirill Sergeev, Nikolay Sugonyako, Andrey Agarkov, Gleb Safyannikov
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -20,6 +20,5 @@
 
 #pragma once
 
-#include <iostream>
-
-// TODO: установите здесь ссылки на дополнительные заголовки, требующиеся для программы.
+#include <gtest/gtest.h>
+#include "../brazierORM/brazierORM.h"

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2026 Kirill Sergeev, Nikolay Sugonyako, Andrey Agarkov, Gleb Safyannikov
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -18,8 +18,18 @@
  * along with brazier; if not, see <https://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include <exception>
+#include <gtest/gtest.h>
+#include "../../include/Database.hpp"
 
-#include <iostream>
+using namespace brazier;
 
-// TODO: установите здесь ссылки на дополнительные заголовки, требующиеся для программы.
+TEST(DatabaseTest, ConnectionTest) {
+	try {
+		Database db("localhost", "5432", "test", "test", "test");
+		EXPECT_NE(db.getConnection(), nullptr);
+	}
+	catch (const std::exception& e) {
+		FAIL() << "Exception thrown during connection: " << e.what();
+	}
+}
