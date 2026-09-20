@@ -6,6 +6,7 @@
   "homepage": "https://github.com/lev2p1/brazier",
   "dependencies": [
     "libpq",
-    "gtest"
+    "gtest",
+    "nlohmann-json"
   ]
 }

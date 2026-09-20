@@ -6,6 +6,7 @@ if(MSVC)
 endif()
 
 find_package(PostgreSQL REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 add_executable(brazierORM "brazierORM.cpp" "brazierORM.h" "src/Logger.cpp" "src/Database.cpp" "src/SQLString.cpp")
 
@@ -13,7 +14,12 @@ if(CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET brazierORM PROPERTY CXX_STANDARD 20)
 endif()
 
-target_link_libraries(brazierORM PRIVATE PostgreSQL::PostgreSQL)
+set(LIBRARIES
+    PostgreSQL::PostgreSQL
+    nlohmann_json::nlohmann_json
+)
+
+target_link_libraries(brazierORM PRIVATE ${LIBRARIES})
 
 find_package(GTest CONFIG REQUIRED)
 
@@ -45,7 +51,7 @@ target_link_libraries(brazier-orm_tests PRIVATE
     GTest::gtest_main
     GTest::gmock
     GTest::gmock_main
-    PostgreSQL::PostgreSQL
+    ${LIBRARIES}
 )
 
 add_custom_target(check

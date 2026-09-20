@@ -55,3 +55,16 @@ namespace brazier {
         bool in_transaction_ = false;
     };
 }
+
+template<typename T>
+class Array {
+
+public:
+    T ret(T value) { return value; }
+
+};
+
+template <typename T>
+T ret(T value) {
+    return value;
+}
