@@ -2,6 +2,7 @@
 /out
 /vcpkg_installed
 /build
+/brazierORM/tests/config/config.hpp
 
 .env
 config.json

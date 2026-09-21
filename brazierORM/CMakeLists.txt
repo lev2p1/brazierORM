@@ -1,6 +1,8 @@
 ﻿cmake_minimum_required(VERSION 3.14)
 project(brazier-orm VERSION 0.1.0 LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 20)
+
 if(MSVC)
     add_compile_options(/utf-8 /bigobj)
 endif()

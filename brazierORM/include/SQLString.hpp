@@ -22,7 +22,7 @@
 #include <string>
 #include <libpq-fe.h>
 
-    namespace brazier {
+namespace brazier {
 
     class SQLString {
     public:
