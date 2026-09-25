@@ -81,7 +81,7 @@ TEST(DatabaseTest, ModelFindTest) {
 	try {
 		std::shared_ptr<Database> db = std::make_shared<Database>(db_host, db_port, db_user, db_password, db_name);
 		auto model = TestModel::find(1, db);
-		EXPECT_NE(model, nullptr);
+		ASSERT_NE(model, nullptr);
 		EXPECT_EQ(model->getAttribute("test"), "Sample Test");
 	}
 	catch (const std::exception& e) {

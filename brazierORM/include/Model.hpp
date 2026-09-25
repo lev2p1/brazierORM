@@ -196,7 +196,7 @@ namespace brazier {
 
         static std::shared_ptr<Derived> find(int id, const std::shared_ptr<Database>& db = getDefaultDatabase()) {
             try {
-                auto results = query().Where(Derived::primary_key + " = " + std::to_string(id)).Limit(1).get();
+                auto results = query().Where(Derived::primary_key + " = " + std::to_string(id)).Limit(1).get(db);
                 if (results.empty()) {
                     Logger::log("No data found by id", "WARNING");
                     return nullptr;
@@ -229,7 +229,7 @@ namespace brazier {
                     Logger::log("No valid fields provided for update", "WARNING");
                     return;
                 }
-                builder.Update(updateValues).Where("id = " + SQLString::EscapeString(conn, std::to_string(id)));
+                builder.Update(updateValues).Where(Derived::primary_key + " = " + SQLString::EscapeString(conn, std::to_string(id)));
                 db->execute(builder.get());
             }
             catch (const std::exception& e) {
@@ -246,12 +246,12 @@ namespace brazier {
                     return;
                 }
                 SQLQueryBuilder builder(Derived::table_name);
-                auto id = getAttribute("id");
+                auto id = getAttribute(Derived::primary_key);
                 if (id.empty()) {
                     Logger::log("ID attribute is missing", "ERROR");
                     return;
                 }
-                builder.Delete().Where("id = " + SQLString::EscapeString(conn, id));
+                builder.Delete().Where(Derived::primary_key + " = " + SQLString::EscapeString(conn, id));
                 std::string query = builder.get();
                 database->execute(query);
             }
@@ -298,7 +298,7 @@ namespace brazier {
         }
 
         static Collection<Derived> where(const std::string& condition, const std::shared_ptr<Database>& db = getDefaultDatabase()) {
-            auto items = query().Where(condition).get();
+            auto items = query().Where(condition).get(db);
             for (const auto& item : items) {
                 item->setDatabase(db);
             }
@@ -454,7 +454,7 @@ namespace brazier {
         }
 
         static std::shared_ptr<Derived> first(const std::shared_ptr<Database>& db = getDefaultDatabase()) {
-            auto results = query().Limit(1).get();
+            auto results = query().Limit(1).get(db);
             if (results.empty()) return nullptr;
             results.front()->setDatabase(db);
             return results.front();
@@ -514,7 +514,7 @@ namespace brazier {
             auto results = query()
                 .Select("COUNT(*) as total")
                 .Where(condition)
-                .get();
+                .get(db);
             // remark : Technically, models from query() doesn't need assigned `db` here unless the data is used and not just read. I assigned it for safety.
 
             for (const auto& row : results) row->setDatabase(db);
@@ -526,7 +526,7 @@ namespace brazier {
             auto results = query()
                 .Select("MAX(" + column + ") as max")
                 .Where(condition)
-                .get();
+                .get(db);
 
             for (const auto& row : results) row->setDatabase(db);
             return results.empty() ? 0 :
@@ -537,7 +537,7 @@ namespace brazier {
             auto results = query()
                 .Select("SUM(" + column + ") as sum")
                 .Where(condition)
-                .get();
+                .get(db);
 
             for (const auto& row : results) row->setDatabase(db);
             return results.empty() ? 0 :
@@ -611,13 +611,13 @@ namespace brazier {
                 .Where(condition)
                 .Limit(perPage)
                 .Offset(offset)
-                .get();
+                .get(db);
             for (const auto& row : items) row->setDatabase(db);
 
             auto countQuery = query()
                 .Select("COUNT(*) as total")
                 .Where(condition)
-                .get();
+                .get(db);
             for (const auto& row : countQuery) row->setDatabase(db);
 
             int total = countQuery.empty() ? 0 :
