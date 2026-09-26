@@ -25,7 +25,6 @@ using namespace brazier;
 Database::Database(std::string db_host, std::string db_port, std::string db_user, std::string db_password, std::string db_name) {
     std::string connection_string = "host=" + db_host + " user=" + db_user + " password=" + db_password + " dbname=" + db_name + " client_encoding=UTF8";
     conn_ = PQconnectdb(connection_string.c_str());
-    Logger::log("Successfully connected to database " + db_name, "SUCCESS");
     if (PQstatus(conn_) != CONNECTION_OK) {
         throw std::runtime_error("Connection failed: " + std::string(PQerrorMessage(conn_)));
     }
@@ -38,8 +37,6 @@ Database::~Database() {
 }
 
 void brazier::Database::execute(const std::string& query) {
-    Logger::log("SQL Query: " + query, "INFO");
-
     PGresult* res = PQexec(conn_, query.c_str());
     ExecStatusType status = PQresultStatus(res);
 
@@ -117,7 +114,6 @@ void brazier::Database::rollback(const std::string name)
 void brazier::Database::commit()
 {
     PGresult* res = PQexec(conn_, "COMMIT");
-    Logger::log("Commit transaction", "INFO");
 
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
         Logger::log(std::string(PQerrorMessage(conn_)), "ERROR");
@@ -151,7 +147,6 @@ std::string Database::query(const std::string& sql) {
     }
 
     PQclear(res);
-    Logger::log("Successfull query execution", "INFO");
     return result;
 }
 /*
@@ -180,7 +175,6 @@ std::vector<std::map<std::string, std::string>> Database::queryToVector(
     }
 
     PGresult* res = PQexec(conn_, sql.c_str());
-    Logger::log("SQL Query: " + sql, "INFO");
 
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
         Logger::log(std::string(PQerrorMessage(conn_)), "ERROR");
@@ -235,7 +229,6 @@ std::map<std::string, std::string> Database::queryMap(
     }
 
     PGresult* res = PQexec(conn_, sql.c_str());
-    Logger::log("SQL Query: " + sql, "INFO");
     std::map<std::string, std::string> row;
 
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
